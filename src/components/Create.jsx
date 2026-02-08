@@ -1,42 +1,41 @@
-import { nanoid } from 'nanoid'
 import React, { useState } from 'react'
-
-
+import {nanoid} from 'nanoid'
 
 const Create = (props) => {
-
     const todo = props.todo
     const settodo = props.settodo
-    const [task, settask] = useState("")
+    
 
-     const submitHandler = (e)=>{
-      e.preventDefault()
-       
-      const newtodo = {
-        id:nanoid(),
-        task,
-        isCompleted : false
-      }
-       let x = [...todo]; 
-      x.push(newtodo)
-      settodo(x)
-      settask("")
-      
+
+
+    const [kaam, setkaam] = useState("")
+
+    const submitHandler = (e)=>{
+    e.preventDefault();
+    const newtodo = {
+      id:nanoid(),
+      task : kaam,
+      iscomplete : false
     }
-
+    settodo([...todo,newtodo])
+    setkaam("")
+  }
+ 
   return (
-    <div className=' w-[60%] p-10 text-white'>
-      <h1 className='text-6xl font-thin mb-10'>Set <span className='text-red-400'>Reminders </span>for <br />tasks</h1>
-      <form onSubmit={submitHandler}>
-
-          <input 
-          className='border-b text-4xl font-thin w-full p-2 outline-0'
-          type="text" placeholder='Enter task' onChange={(e)=>{settask(e.target.value)}} value={task} />
-          <br /><br />
-          <button className='text-xl py-2 border rounded mt-5 px-10'>Add Task</button>
+    <div className='w-[70%]  text-white p-10 '>
+        <h1 className='text-6xl font-thin mb-15'>Set <span className='text-red-400'>Reminders</span> for your <br />todos</h1>
+      <form onSubmit={submitHandler} >
+        <input type="text" 
+        className='text-3xl w-[70%] border-b outline-0 px-3 py-1'
+        placeholder='Enter task'
+        onChange={(e)=>{setkaam(e.target.value)}}
+        value={kaam}
+        />
+        <br /><br />
+        <button className='text-2xl border p-3 mt-5 rounded font-thin bg-gray-300 text-gray-900'>Add Task</button>
       </form>
     </div>
   )
 }
 
-export default Create
+export default Create;
