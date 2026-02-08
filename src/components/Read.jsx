@@ -1,4 +1,5 @@
 import React from 'react'
+import { toast } from 'react-toastify'
 
 const Read = (props) => {
 
@@ -13,11 +14,14 @@ const Read = (props) => {
       return e
     })
     settodo(update)
+    toast.success("Task completed")
+    
   }
 
   const del = (id) => {
     const filtered = todo.filter(task => task.id != id)
     settodo(filtered)
+    toast.error("todo deleted!")
   }
 
   const work = todo.map((e) => {
@@ -25,7 +29,7 @@ const Read = (props) => {
       <li
         key={e.id}
         
-        className='text-xl flex justify-between items-center bg-gray-900 mb-5 p-3 rounded'
+        className='text-xl flex justify-between items-center bg-gray-900 mb-5 p-4 rounded'
       >
         <span style={{ textDecoration: e.isComplete ? "line-through" : "none" }}>
         {e.task}
@@ -41,7 +45,7 @@ const Read = (props) => {
   })
 
   return (
-    <div className='w-[30%]  text-white p-10 '>
+    <div className='w-[40%]  text-white p-10 '>
       <h1 className='text-6xl font-thin mb-15 '> <span className='text-pink-400'> Pending</span> work</h1>
       <ol>{work}</ol>
     </div>
