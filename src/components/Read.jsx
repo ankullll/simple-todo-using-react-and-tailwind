@@ -1,55 +1,40 @@
+import { nanoid } from 'nanoid'
 import React from 'react'
+import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
-const Read = (props) => {
+const Create = (props) => {
+    const todo = props.todo
+    const settodo = props.settodo
 
-  const todo = props.todo
-  const settodo = props.settodo
-
-  const comp = (id) => {
-    let update = todo.map((e) => {
-      if (e.id == id) {
-        return { ...e, isComplete: true }
-      }
-      return e
-    })
-    settodo(update)
-    toast.success("Task completed")
-    
+    const {
+    register,
+    handleSubmit,
+    reset,
+    formState:{errors}
+  }=useForm()
+  
+  const submitHandler = (data)=>{
+    data.id = nanoid()
+    data.isComplete = false
+    console.log(data)
+    settodo([...todo,data])
+    toast.success("Task added successfully")
+    reset()
   }
-
-  const del = (id) => {
-    const filtered = todo.filter(task => task.id != id)
-    settodo(filtered)
-    toast.error("todo deleted!")
-  }
-
-  const work = todo.map((e) => {
-    return (
-      <li
-        key={e.id}
-        
-        className='text-xl flex justify-between items-center bg-gray-900 mb-5 p-4 rounded'
-      >
-        <span style={{ textDecoration: e.isComplete ? "line-through" : "none" }}>
-        {e.task}
-
-        </span>
-        <div className='flex gap-3'>
-        <button className='text-red-500' onClick={() => del(e.id)}>Delete</button>
-        <button className='text-green-500' onClick={() => comp(e.id)}>Completed</button>
-        </div>
-        
-      </li>
-    )
-  })
 
   return (
-    <div className='w-[40%]  text-white p-10 '>
-      <h1 className='text-6xl font-thin mb-15 '> <span className='text-pink-400'> Pending</span> work</h1>
-      <ol>{work}</ol>
+    <div className="w-[70%]  text-white p-10 ">
+        <h1 className="text-6xl font-thin mb-15">Set <span className="text-red-400">Reminders</span> for your <br /> todos</h1>
+    <form onSubmit={handleSubmit(submitHandler)} className="flex flex-col ">
+    <input type="text" 
+    className="text-3xl w-[70%] border-b outline-0 px-3 py-1 "
+    {...register("task",{required:"task can not be empty"})}/>
+    <small className="text-xl p-3 text-red-500">{errors?.task?.message}</small>
+    <button className="text-2xl border py-3 px-10 mt-2 rounded font-thin bg-gray-300 text-gray-900 w-fit">Add task</button>
+      </form>
     </div>
   )
 }
 
-export default Read
+export default Create
